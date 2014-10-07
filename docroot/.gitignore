@@ -1,0 +1,9 @@
+.DS_Store
+.buildpath
+.project
+.settings
+/backup
+/sites/default/files/css
+/sites/default/files/js
+/sites/default/files/xmlsitemap
+/tmp
