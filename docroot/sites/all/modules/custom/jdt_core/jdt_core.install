@@ -9,3 +9,13 @@
   $module_list = array("jdt_core_feature");
   module_enable($module_list, $enable_dependencies = TRUE);
 }
+
+/**
+* Implements hook_update_N().
+* Enables Feature to install Content Type Article.
+*/
+  function jdt_core_update_7001() {
+  // Declare an array of modules to be installed
+  $module_list = array("jdt_content_type_article");
+  module_enable($module_list, $enable_dependencies = TRUE);
+}
