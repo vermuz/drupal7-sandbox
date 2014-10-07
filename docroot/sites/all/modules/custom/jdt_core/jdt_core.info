@@ -1,0 +1,3 @@
+name = JDT Core
+description = Enables common modules for others.
+core = 7.x
