@@ -1,11 +1,11 @@
 <?php
-
 /**
-* Implements hook_update_N().
-* Enables Core Feature and Content Type Article to install common modules.
-*/
+ * @file
+ * Implements hook_update_N().
+ * Enables Core Feature and Content Type Article to install common modules.
+ */
   function jdt_core_update_7000() {
   // Declare an array of modules to be installed
   $module_list = array("jdt_content_type_article");
-  module_enable($module_list, $enable_dependencies = TRUE);
+  module_enable($module_list);
 }
