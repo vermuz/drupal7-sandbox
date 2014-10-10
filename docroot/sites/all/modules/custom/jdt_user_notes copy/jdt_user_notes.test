@@ -20,7 +20,7 @@ class JDTUSERNOTESTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * Create user with administrative credentials for carrying out tests.
+   * Create user with administrative credentials.
    */
   public function drupalCreateAdminUser(array $permissions = array()) {
     $roles = user_roles();
@@ -48,13 +48,9 @@ class JDTUSERNOTESTestCase extends DrupalWebTestCase {
   /**
    * Test CRUD Functions.
    */
-  public function testCRUDFunctions() {
-    // Load CRUD Functions from file.
-    $file_path = module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
-    var_dump($file_path);
+  public function testAPIExamples() {
     // Load Entries Check for Two.
     $result = jdt_user_notes_entry_load();
-    // Check what you get.
     $this->assertEqual(
       count($result),
       2,

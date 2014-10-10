@@ -103,6 +103,7 @@ function _jdt_user_form_notes_note_id($nid, $uid) {
  */
 function _jdt_user_form_notes_form_definition_submit($form, &$form_state) {
   $values = $form_state['values'];
+  dpm($values);
   $entry = array(
     'note_text'   => $form_state['values']['note_textfield'],
     'author_uid'  => $form_state['values']['uid'],
