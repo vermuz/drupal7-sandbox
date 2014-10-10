@@ -8,19 +8,6 @@
  * Insert Items into the Schema.
  */
 function jdt_user_notes_install() {
-  $fields = array(
-    'note_text' => 'Hello Note 1',
-  );
-  db_insert('user_note')
-    ->fields($fields)
-    ->execute();
-
-  $fields = array(
-    'note_text' => 'Hello Note 2',
-  );
-  db_insert('user_note')
-    ->fields($fields)
-    ->execute();
 }
 
 /**
