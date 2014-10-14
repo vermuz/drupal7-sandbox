@@ -44,7 +44,7 @@ class JDTUSERNOTESTestCase extends DrupalWebTestCase {
     $user = $this->drupalCreateAdminUser();
     $this->drupalLogin($user);
     // Load CRUD Functions.
-    $file_path = module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
+    module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
   }
 
   /**
