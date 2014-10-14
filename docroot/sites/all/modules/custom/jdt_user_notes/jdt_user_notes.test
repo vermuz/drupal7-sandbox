@@ -7,7 +7,7 @@
 /**
  * Declare class extending from Drupal Test Case.
  */
-class JDTUSERNOTESTestCase extends DrupalUnitTestCase {
+class JDTUSERNOTESTestCase extends DrupalWebTestCase {
   /**
    * GetInfo().
    */
@@ -22,7 +22,6 @@ class JDTUSERNOTESTestCase extends DrupalUnitTestCase {
   /**
    * Create user with administrative credentials for carrying out tests.
    */
-
   public function drupalCreateAdminUser(array $permissions = array()) {
     $roles = user_roles();
     $index = array_search('administrator', $roles);
@@ -34,62 +33,106 @@ class JDTUSERNOTESTestCase extends DrupalUnitTestCase {
   /**
    * Set Up.
    */
-
   public function setUp() {
     // Enable any modules required for the test. This should be an array of
     // module names.
-    //parent::setUp(array(
-      //'jdt_core',
-      //'jdt_content_type_article',
-     // 'jdt_user_notes',
-    //));
-    //drupal_load('module', 'simpletest_example');
-
-    // Load Necessary Modules for the test
-    //drupal_load('module', 'jdt_core');
-    //drupal_load('module', 'jdt_content_type_article');
-    drupal_load('module', 'jdt_user_notes');
-    parent::setUp();
-    //$user = $this->drupalCreateAdminUser();
-    //$this->drupalLogin($user);
+    parent::setUp(array(
+      'jdt_core',
+      'jdt_content_type_article',
+      'jdt_user_notes',
+    ));
+    $user = $this->drupalCreateAdminUser();
+    $this->drupalLogin($user);
+    // Load CRUD Functions.
+    $file_path = module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
   }
 
   /**
-   * Test CRUD Functions.
+   * Tests Insert Functionality.
    */
+  public function testLoading() {
+    // Load Entries.
+    $result = jdt_user_notes_entry_load();
+    // Check what you get.
+    $this->assertEqual(
+      count($result),
+      0,
+      'Found a total of 0 entries.'
+    );
+  }
 
   /**
-   * Test Insertion
+   * Tests Insert Functionality.
    */
-  function testDataInsertion() {
-    $file_path = module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
-     // Create Entry.
+  public function testInsertion() {
+    // Create Entry.
     $entry = array(
       'note_text' => 'Text 3',
     );
-    $result = jdt_user_notes_insert($entry);
-    $message = 'Pushing of a value into DB should return TRUE';
-    $this->assertTrue($result, $message);
+    jdt_user_notes_insert($entry);
+    $result = jdt_user_notes_entry_load();
+    $this->assertEqual(
+      count($result),
+      1,
+      'Found a total of 1 entries.'
+    );
   }
 
- /**
-   * Test Loading
+  /**
+   * Tests Delete Functionality.
    */
-  function testDataLoading() {
-
+  public function testDeletion() {
+    // Create entry so you can delete it.
+    $entry = array(
+      'note_text' => 'Text 4',
+    );
+    jdt_user_notes_insert($entry);
+    // Load entry so you can delete it.
+    $result = jdt_user_notes_entry_load(array('note_text' => 'Text 4'));
+    $this->assertEqual(
+      count($result),
+      1,
+      'Found one entry with Text 4'
+    );
+    $entry = (array) end($result);
+    $this->assertEqual(
+      $entry['note_text'],
+      'Text 4',
+      'Text 4 is found'
+    );
+    // Delete it.
+    jdt_user_notes_delete($entry);
+    // Load values.
+    $result = jdt_user_notes_entry_load();
+    $this->assertEqual(
+      count($result),
+      0,
+      'Found a total of 0 entries.'
+    );
   }
 
- /**
-   * Test Deletion
+  /**
+   * Tests Updates Functionality.
    */
-  function testDataDeletion() {
-
-  }
-
- /**
-   * Test Updation
-   */
-  function testDataUpdation() {
-
+  public function testUpdate() {
+    // Create entry so you can update it.
+    // Create Entry.
+    $entry = array(
+      'note_text' => 'Text 5',
+    );
+    jdt_user_notes_insert($entry);
+    // Load entry.
+    $result = jdt_user_notes_entry_load(array('note_text' => 'Text 5'));
+    $entry = (array) end($result);
+    // Change note to Text 6 New.
+    $entry['note_text'] = 'Text 6 New';
+    // Update entry in Database.
+    jdt_user_notes_update($entry);
+    $result = jdt_user_notes_entry_load(array('note_text' => 'Text 6 New'));
+    $this->assertEqual(
+      count($result),
+      1,
+      'Found one entry with Text 6 New'
+    );
   }
 }

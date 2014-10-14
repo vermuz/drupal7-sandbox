@@ -5,12 +5,6 @@
  */
 
 /**
- * Insert Items into the Schema.
- */
-function jdt_user_notes_install() {
-}
-
-/**
  * Create User Note Table.
  */
 function jdt_user_notes_schema() {
@@ -39,20 +33,13 @@ function jdt_user_notes_schema() {
         'default' => 0,
       ),
       'note_text' => array(
-        'description' => 'Author note text.',
-        'type' => 'varchar',
-        'length' => 255,
+        'description' => 'The primary identifier for author user_id.',
+        'type' => 'text',
+        'size' => 'big',
         'not null' => TRUE,
-        'default' => '',
       ),
     ),
     'primary key' => array('note_id'),
-    'indexes' => array(
-      'note_id' => array('note_id'),
-      'article_nid' => array('article_nid'),
-      'author_uid' => array('author_uid'),
-      'note_text' => array('note_text'),
-    ),
   );
   return $schema;
 }

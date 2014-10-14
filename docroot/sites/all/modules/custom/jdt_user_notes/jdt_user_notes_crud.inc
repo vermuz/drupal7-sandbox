@@ -8,9 +8,8 @@
  * Read entries from the Database and load them.
  */
 function jdt_user_notes_entry_load($entry = array()) {
-  //$select = db_select('user_note', 'drupal7_development');
-  $select = db_select('user_note','n');
-  $select->fields('n');
+  $select = db_select('user_note', 'drupal7_development');
+  $select->fields('drupal7_development');
   // Add each field and value as a condition to this query.
   foreach ($entry as $field => $value) {
     $select->condition($field, $value);
@@ -23,28 +22,17 @@ function jdt_user_notes_entry_load($entry = array()) {
  * Function to insert values into DB.
  */
 function jdt_user_notes_insert($entry) {
-  //$return_value = NULL;
-  //$status = FALSE;
+  $return_value = NULL;
   try {
-    db_insert('user_note')
+    $return_value = db_insert('user_note')
       ->fields($entry)
-      ->execute();
-    //$status = TRUE;
-    return TRUE;
+       ->execute();
   }
-  catch (PDOException $e) {
-    //$status = FALSE;
-    //watchdog(
-    //);
-    watchdog('jdt_user_notes',
-      'db_insert failed in user_note table, query=%query',
-      array('%query' => $e->query_string),
-      WATCHDOG_INFO
-    );
+  catch(Exception $e) {
+    drupal_set_message(t('db_insert failed. Message = %message, query= %query',
+    array('%message' => $e->getMessage(), '%query' => $e->query_string)), 'error');
   }
-  //return $return_value;
-  //return $status;
-  return FALSE;
+  return $return_value;
 }
 
 /**
@@ -68,11 +56,8 @@ function jdt_user_notes_update($entry) {
       ->execute();
   }
   catch (Exception $e) {
-    watchdog('jdt_user_notes',
-      'db_update failed in user_note table, query=%query',
-      array('%query' => $e->query_string),
-      WATCHDOG_INFO
-    );
+    drupal_set_message(t('db_update failed. Message = %message, query= %query',
+      array('%message' => $e->getMessage(), '%query' => $e->query_string)), 'error');
   }
   return $count;
 }

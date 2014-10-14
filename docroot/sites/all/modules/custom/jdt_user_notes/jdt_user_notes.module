@@ -5,7 +5,7 @@
  */
 
 /**
- * Implements hook_permission.
+ * Implements hook_permission().
  */
 function jdt_user_notes_permission() {
   return array(
