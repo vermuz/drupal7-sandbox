@@ -26,6 +26,7 @@ function jdt_user_notes_menu() {
       'page callback' => 'drupal_get_form',
       // Pass along the node id to the callback function.
       'page arguments' => array('jdt_user_notes_form_definition', 1),
+      'file' => 'jdt_user_notes_crud.inc',
     );
     return $items;
 }
@@ -38,7 +39,6 @@ function jdt_user_notes_form_definition($form, &$form_state, $nid) {
   // Default value check
   // If default value exists in database use that as default value.
   // If default value does not exist - print empty.
-  module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
   $result = jdt_user_notes_entry_load($nid, $user_id);
   // Set values for note and note id.
   if (isset($result['note_text'])) {
@@ -98,7 +98,6 @@ function jdt_user_notes_form_definition_submit($form, &$form_state) {
     'author_uid'  => $form_state['values']['uid'],
     'note_id'     => $form_state['values']['note_id'],
   );
-  module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
   jdt_user_notes_update($entry);
   drupal_set_message(t('Your note has been added'));
 }
