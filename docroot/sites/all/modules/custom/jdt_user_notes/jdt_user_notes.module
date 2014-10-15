@@ -9,7 +9,7 @@
  */
 function jdt_user_notes_permission() {
   return array(
-    'jdt_user_notes' => array(
+    'jdt_user_notes_permission' => array(
       'title' => t('Administer Notes'),
       'description' => t('Perform administration tasks for notes.'),
     ),
@@ -24,12 +24,22 @@ function jdt_user_notes_menu() {
       $items['note/%'] = array(
         'access callback' => TRUE,
         'page callback' => 'drupal_get_form',
-        // Pass along the node id to the callback function.
         'page arguments' => array('jdt_user_notes_form_definition', 1),
         'file' => 'jdt_user_notes_crud.inc',
+        'access callback' => 'jdt_user_notes_menu_permissions_callback',
+        'access arguments' => array('jdt_user_notes_permission'),
+        'type' => MENU_CALLBACK,
       );
       return $items;
 }
+
+/**
+ * Permissions for the menu
+ */
+function jdt_user_notes_menu_permissions_callback($permission) {
+  return user_access($access);
+}
+
 /**
  * Form definition.
  */
