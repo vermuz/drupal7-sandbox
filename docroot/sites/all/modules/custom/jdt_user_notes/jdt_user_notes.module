@@ -21,7 +21,6 @@ function jdt_user_notes_permission() {
  */
 function jdt_user_notes_menu() {
     // Note URL Pattern -> note/article_nid.
-    if (user_access('Administer Notes')) {
       $items['note/%'] = array(
         'access callback' => TRUE,
         'page callback' => 'drupal_get_form',
@@ -30,7 +29,6 @@ function jdt_user_notes_menu() {
         'file' => 'jdt_user_notes_crud.inc',
       );
       return $items;
-    }
 }
 /**
  * Form definition.
