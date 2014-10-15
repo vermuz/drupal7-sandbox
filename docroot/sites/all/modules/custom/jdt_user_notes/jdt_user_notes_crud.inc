@@ -25,7 +25,7 @@ function jdt_user_notes_insert($entry) {
   try {
     $return_value = db_insert('user_note')
       ->fields($entry)
-       ->execute();
+      ->execute();
   }
   catch(Exception $e) {
     drupal_set_message(t('db_insert failed. Message = %message, query= %query',
@@ -51,7 +51,6 @@ function jdt_user_notes_update($entry) {
     // db_update()...->execute() returns the number of rows updated.
     $count = db_update('user_note')
       ->fields($entry)
-      //->condition('note_id', $entry['note_id'])
       ->execute();
   }
   catch (Exception $e) {

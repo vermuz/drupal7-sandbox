@@ -20,7 +20,6 @@ function jdt_user_notes_permission() {
  * Implements hook_menu().
  */
 function jdt_user_notes_menu() {
-  //return array(
     // Note URL Pattern -> note/article_nid.
     $items['note/%'] = array(
       'access callback' => TRUE,
@@ -28,7 +27,6 @@ function jdt_user_notes_menu() {
       // Pass along the node id to the callback function.
       'page arguments' => array('jdt_user_notes_form_definition', 1),
     );
-  //);
     return $items;
 }
 /**
@@ -95,7 +93,6 @@ function jdt_user_notes_form_definition($form, &$form_state, $nid) {
 function jdt_user_notes_form_definition_submit($form, &$form_state) {
   // Grab values from the form state.
   $values = $form_state['values'];
-  //dsm($values);
   $entry = array(
     'note_text'   => $form_state['values']['note_textfield'],
     'author_uid'  => $form_state['values']['uid'],
