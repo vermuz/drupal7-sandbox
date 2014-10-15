@@ -7,6 +7,7 @@
 /**
  * Read entries from the Database and load them.
  */
+/*
 function jdt_user_notes_entry_load($entry = array()) {
   $select = db_select('user_note', 'drupal7_development');
   $select->fields('drupal7_development');
@@ -16,6 +17,19 @@ function jdt_user_notes_entry_load($entry = array()) {
   }
   // Return the result in object format.
   return $select->execute()->fetchAll();
+}*/
+
+/**
+ * Read entries from the Database and load them.
+ */
+function jdt_user_notes_entry_load($node_id, $user_id) {
+  $result = db_select('user_note', 'n')
+   ->fields('n')
+   ->condition('article_nid', $node_id, "=")
+   ->condition('author_uid', $user_id, "=")
+   ->execute()
+   ->fetchAssoc();
+   return $result;
 }
 
 /**

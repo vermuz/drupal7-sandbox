@@ -20,33 +20,48 @@ function jdt_user_notes_permission() {
  * Implements hook_menu().
  */
 function jdt_user_notes_menu() {
-  return array(
+  //return array(
     // Note URL Pattern -> note/article_nid.
-    'note/%' => array(
+    $items['note/%'] = array(
       'access callback' => TRUE,
       'page callback' => 'drupal_get_form',
-      'page arguments' => array('_jdt_user_notes_form_definition', 1),
-    ),
-  );
+      // Pass along the node id to the callback function.
+      'page arguments' => array('jdt_user_notes_form_definition', 1),
+    );
+  //);
+    return $items;
 }
 /**
  * Form definition.
  */
-function _jdt_user_notes_form_definition($form, &$form_state, $nid) {
+function jdt_user_notes_form_definition($form, &$form_state, $nid) {
   global $user;
   $user_id = $user->uid;
   // Default value check
   // If default value exists in database use that as default value.
   // If default value does not exist - print empty.
-  $default_value_note = _jdt_user_notes_note_exists($nid, $user_id);
-  $default_note_id = _jdt_user_notes_note_id($nid, $user_id);
-
+  module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
+  $result = jdt_user_notes_entry_load($nid, $user_id);
+  // Set values for note and note id.
+  if (isset($result['note_text'])) {
+    $default_value_note = $result['note_text'];
+  }
+  else {
+    $default_value_note = '';
+  }
+  if (isset($result['note_id'])) {
+    $default_note_id = $result['note_id'];
+  }
+  else {
+    // If a note does not exist - generate a random note id.
+    $nid_rand = rand();
+    $default_note_id = $nid_rand;
+  }
   $form['fieldset'] = array(
     '#type' => 'fieldset',
     '#title' => t('Note to Article'),
     '#default_value' => 'Hello',
   );
-
   $form['fieldset']['note_textfield'] = array(
     '#type' => 'textfield',
     '#title' => t('Note'),
@@ -75,51 +90,9 @@ function _jdt_user_notes_form_definition($form, &$form_state, $nid) {
 }
 
 /**
- * Grab Note from the database.
- */
-function _jdt_user_notes_note_exists($nid, $uid) {
-  // Grab values from the database.
-  // Populate default value with the value stored.
-  // in the database.
-  $result = db_select('user_note', 'n')
-   ->fields('n')
-   ->condition('article_nid', $nid, "=")
-   ->condition('author_uid', $uid, "=")
-   ->execute()
-   ->fetchAssoc();
-  if (isset($result['note_text'])) {
-    // If a note exists - send it.
-    return $result['note_text'];
-  }
-  // If a note does not exist - enter empty string.
-  return '';
-}
-
-/**
- * Grab Note Id from the database.
- */
-function _jdt_user_notes_note_id($nid, $uid) {
-  // Grab values from the database.
-  // Populate default value with the value stored.
-  // in the database.
-  $result = db_select('user_note', 'n')
-   ->fields('n')
-   ->condition('article_nid', $nid, "=")
-   ->condition('author_uid', $uid, "=")
-   ->execute()
-   ->fetchAssoc();
-  if (isset($result['note_id'])) {
-    return $result['note_id'];
-  }
-  // If a note does not exist - generate a random note id.
-  $nid_rand = rand();
-  return $nid_rand;
-}
-
-/**
  * Submit handler.
  */
-function _jdt_user_notes_form_definition_submit($form, &$form_state) {
+function jdt_user_notes_form_definition_submit($form, &$form_state) {
   // Grab values from the form state.
   $values = $form_state['values'];
   //dsm($values);
