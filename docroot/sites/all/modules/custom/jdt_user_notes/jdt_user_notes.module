@@ -102,7 +102,6 @@ function jdt_user_notes_form_definition_submit($form, &$form_state) {
     'note_id'     => $form_state['values']['note_id'],
   );
   module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
-  //jdt_user_notes_insert($entry);
   jdt_user_notes_update($entry);
   drupal_set_message(t('Your note has been added'));
 }

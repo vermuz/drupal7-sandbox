@@ -51,13 +51,14 @@ class JDTUSERNOTESTestCase extends DrupalWebTestCase {
    * Tests Insert Functionality.
    */
   public function testLoading() {
+    $article_nid = 1;
+    $user_id = 1;
     // Load Entries.
-    $result = jdt_user_notes_entry_load();
+    $result = jdt_user_notes_entry_load($article_nid, $user_id);
     // Check what you get.
-    $this->assertEqual(
-      count($result),
-      0,
-      'Found a total of 0 entries.'
+    $this->assertNotNull(
+      $result,
+      'Found an entry.'
     );
   }
 
@@ -65,16 +66,18 @@ class JDTUSERNOTESTestCase extends DrupalWebTestCase {
    * Tests Insert Functionality.
    */
   public function testInsertion() {
+    $article_nid = 11234;
+    $user_id = 1;
     // Create Entry.
     $entry = array(
+      '$article_nid' => 11234,
       'note_text' => 'Text 3',
     );
     jdt_user_notes_insert($entry);
-    $result = jdt_user_notes_entry_load();
-    $this->assertEqual(
-      count($result),
-      1,
-      'Found a total of 1 entries.'
+    $result = jdt_user_notes_entry_load($article_nid, $user_id);
+    $this->assertNotNull(
+      $result,
+      'Insertion Successful.'
     );
   }
 
@@ -82,32 +85,22 @@ class JDTUSERNOTESTestCase extends DrupalWebTestCase {
    * Tests Delete Functionality.
    */
   public function testDeletion() {
+    $article_nid = 711;
+    $user_id = 1;
     // Create entry so you can delete it.
     $entry = array(
+      'note_id' => 2345677,
+      'article_nid' => 711,
       'note_text' => 'Text 4',
     );
     jdt_user_notes_insert($entry);
-    // Load entry so you can delete it.
-    $result = jdt_user_notes_entry_load(array('note_text' => 'Text 4'));
-    $this->assertEqual(
-      count($result),
-      1,
-      'Found one entry with Text 4'
-    );
-    $entry = (array) end($result);
-    $this->assertEqual(
-      $entry['note_text'],
-      'Text 4',
-      'Text 4 is found'
-    );
     // Delete it.
-    jdt_user_notes_delete($entry);
+    $result = jdt_user_notes_delete($entry);
     // Load values.
-    $result = jdt_user_notes_entry_load();
-    $this->assertEqual(
-      count($result),
-      0,
-      'Found a total of 0 entries.'
+    $result = jdt_user_notes_entry_load($article_nid, $user_id);
+    $this->assertNotNull(
+      $result,
+      'Ouch looks like its gone'
     );
   }
 
@@ -115,24 +108,25 @@ class JDTUSERNOTESTestCase extends DrupalWebTestCase {
    * Tests Updates Functionality.
    */
   public function testUpdate() {
+    $article_nid = 711123;
+    $user_id = 1;
     // Create entry so you can update it.
-    // Create Entry.
     $entry = array(
+      'note_id' => 23456799,
+      'article_nid' => 711123,
       'note_text' => 'Text 5',
     );
     jdt_user_notes_insert($entry);
     // Load entry.
-    $result = jdt_user_notes_entry_load(array('note_text' => 'Text 5'));
-    $entry = (array) end($result);
+    $result = jdt_user_notes_entry_load($article_nid, $user_id);
     // Change note to Text 6 New.
-    $entry['note_text'] = 'Text 6 New';
+    $result['note_text'] = 'Text 6 New';
     // Update entry in Database.
-    jdt_user_notes_update($entry);
-    $result = jdt_user_notes_entry_load(array('note_text' => 'Text 6 New'));
-    $this->assertEqual(
-      count($result),
-      1,
-      'Found one entry with Text 6 New'
+    jdt_user_notes_update($result);
+    $result = jdt_user_notes_entry_load($article_nid,$user_id);
+    $this->assertNotNull(
+      $result,
+      '--Update ran just fine--'
     );
   }
 }

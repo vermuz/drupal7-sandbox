@@ -7,21 +7,6 @@
 /**
  * Read entries from the Database and load them.
  */
-/*
-function jdt_user_notes_entry_load($entry = array()) {
-  $select = db_select('user_note', 'drupal7_development');
-  $select->fields('drupal7_development');
-  // Add each field and value as a condition to this query.
-  foreach ($entry as $field => $value) {
-    $select->condition($field, $value);
-  }
-  // Return the result in object format.
-  return $select->execute()->fetchAll();
-}*/
-
-/**
- * Read entries from the Database and load them.
- */
 function jdt_user_notes_entry_load($node_id, $user_id) {
   $result = db_select('user_note', 'n')
    ->fields('n')
@@ -66,7 +51,7 @@ function jdt_user_notes_update($entry) {
     // db_update()...->execute() returns the number of rows updated.
     $count = db_update('user_note')
       ->fields($entry)
-      ->condition('note_id', $entry['note_id'])
+      //->condition('note_id', $entry['note_id'])
       ->execute();
   }
   catch (Exception $e) {
