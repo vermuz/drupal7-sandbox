@@ -50,6 +50,7 @@ function jdt_user_notes_update($entry) {
   try {
     // db_update()...->execute() returns the number of rows updated.
     $count = db_update('user_note')
+      ->condition('note_id', $entry['note_id'])
       ->fields($entry)
       ->execute();
   }
