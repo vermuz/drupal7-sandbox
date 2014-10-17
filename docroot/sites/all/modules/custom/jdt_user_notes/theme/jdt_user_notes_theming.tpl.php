@@ -1,9 +1,9 @@
 <?php
 /**
-  * @file
-  * Template file for tabs
-  * Available custom variables:
-  */
+ * @file
+ * Template file for tabs
+ * Available custom variables:
+ */
 ?>
 <!-- Tab template -->
 <div class="note-container">
