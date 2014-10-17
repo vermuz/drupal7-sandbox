@@ -5,18 +5,6 @@
  */
 
 /**
- * Implements hook_permission().
- */
-function jdt_user_notes_permission() {
-  return array(
-    'jdt_user_notes_permission' => array(
-      'title' => t('Administer Notes'),
-      'description' => t('Perform administration tasks for notes.'),
-    ),
-  );
-}
-
-/**
  * Implements hook_menu().
  */
 function jdt_user_notes_menu() {
@@ -43,6 +31,18 @@ function jdt_user_notes_menu() {
     'type' => MENU_LOCAL_TASK,
   );
   return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function jdt_user_notes_permission() {
+  return array(
+    'jdt_user_notes_permission' => array(
+      'title' => t('Administer Notes'),
+      'description' => t('Perform administration tasks for notes.'),
+    ),
+  );
 }
 
 /**
@@ -104,7 +104,7 @@ function jdt_user_notes_form_definition($form, &$form_state, $node) {
 }
 
 /**
- * Submit handler.
+ * Submit Button handler.
  */
 function jdt_user_notes_form_definition_submit($form, &$form_state) {
   // Grab values from the form state.
@@ -121,13 +121,13 @@ function jdt_user_notes_form_definition_submit($form, &$form_state) {
 }
 
 /**
-  * Page Callback
+  * Show related notes to an article.
   */
 function jdt_user_notes_display_notes($node) {
 }
 
 /**
- * Create tab for notes only if notes exist for an article
+ * Create tab for notes only if notes exist for an article.
  */
 function jdt_user_notes_note_exist($node) {
   global $user;
