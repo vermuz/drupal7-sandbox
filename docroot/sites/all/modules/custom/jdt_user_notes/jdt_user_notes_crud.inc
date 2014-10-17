@@ -9,12 +9,12 @@
  */
 function jdt_user_notes_entry_load($node_id, $user_id) {
   $result = db_select('user_note', 'n')
-   ->fields('n')
-   ->condition('article_nid', $node_id, "=")
-   ->condition('author_uid', $user_id, "=")
-   ->execute()
-   ->fetchAssoc();
-   return $result;
+    ->fields('n')
+    ->condition('article_nid', $node_id, "=")
+    ->condition('author_uid', $user_id, "=")
+    ->execute()
+    ->fetchAssoc();
+  return $result;
 }
 
 /**
