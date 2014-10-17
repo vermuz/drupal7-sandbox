@@ -137,10 +137,12 @@ function jdt_user_notes_display_notes($node) {
   $node_author = $user->name;
   module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
   $load_articles = jdt_user_notes_entry_load($user_id,$node_id);
+  //die(print_r($load_articles));
   //dsm($load_articles);
+  //dsm($load_articles['note_text']);
   return array(
      '#theme' => 'jdt-user-notes',
-     '#NOTE_TEXT' => $articles,
+     '#NOTE_TEXT' => $load_articles['note_text'],
      '#NODE_TITLE' => $node_title,
      '#NODE_AUTHOR' => $node_author,
   );
