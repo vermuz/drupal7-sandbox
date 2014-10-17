@@ -21,23 +21,16 @@ function jdt_user_notes_permission() {
  */
 function jdt_user_notes_menu() {
     // Note URL Pattern -> note/article_nid.
-      $items['jdt_user_notes/note/%'] = array(
+      $items['note/%'] = array(
         'access callback' => TRUE,
         'page callback' => 'drupal_get_form',
-        'page arguments' => array('jdt_user_notes_form_definition', 2),
-        'file' => 'jdt_user_notes_crud.inc',
-        'access callback' => 'jdt_user_notes_menu_permissions_callback',
+        'page arguments' => array('jdt_user_notes_form_definition', 1),
+        'access callback' => 'user_access',
         'access arguments' => array('jdt_user_notes_permission'),
+        'file' => 'jdt_user_notes_crud.inc',
         'type' => MENU_CALLBACK,
       );
       return $items;
-}
-
-/**
- * Permissions for the menu
- */
-function jdt_user_notes_menu_permissions_callback($permission) {
-  return user_access($access);
 }
 
 /**
