@@ -33,7 +33,7 @@ function jdt_user_notes_menu() {
   );
   // Introduce the tab
   $items['jdt_user_notes/view_notes/%node'] = array(
-    'title' => 'My Notes',
+    'title' => t('My Notes'),
     'description' => 'Display articles related to an article',
     'page callback' => 'jdt_user_notes_display_notes',
     'page arguments' => array(2),
