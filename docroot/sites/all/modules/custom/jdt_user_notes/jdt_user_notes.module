@@ -20,17 +20,29 @@ function jdt_user_notes_permission() {
  * Implements hook_menu().
  */
 function jdt_user_notes_menu() {
-    // Note URL Pattern -> note/article_nid.
-      $items['jdt_user_notes/note/%node'] = array(
-        'access callback' => TRUE,
-        'page callback' => 'drupal_get_form',
-        'page arguments' => array('jdt_user_notes_form_definition', 2),
-        'access callback' => 'user_access',
-        'access arguments' => array('jdt_user_notes_permission'),
-        'file' => 'jdt_user_notes_crud.inc',
-        'type' => MENU_CALLBACK,
-      );
-      return $items;
+  // Note URL Pattern -> note/article_nid.
+  $items = array();
+  $items['jdt_user_notes/note/%node'] = array(
+    'access callback' => TRUE,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jdt_user_notes_form_definition', 2),
+    'access callback' => 'user_access',
+    'access arguments' => array('jdt_user_notes_permission'),
+    'file' => 'jdt_user_notes_crud.inc',
+    'type' => MENU_CALLBACK,
+  );
+  // Introduce the tab
+  $items['jdt_user_notes/view_notes/%node'] = array(
+    'title' => 'My Notes',
+    'description' => 'Display articles related to an article',
+    'page callback' => 'jdt_user_notes_display_notes',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+    //'access callback' => 'jdt_article_notes_theming_note_exist',
+    //'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
 }
 
 /**
@@ -106,4 +118,19 @@ function jdt_user_notes_form_definition_submit($form, &$form_state) {
   );
   jdt_user_notes_update($entry);
   drupal_set_message(t('Your note has been added'));
+}
+
+/**
+  * Page Callback
+  */
+function jdt_user_notes_display_notes($node) {
+  return t('Hello');
+  $articles = _jdt_article_notes_theming_note_exists($node->$nid);
+  dpm($articles);
+}
+
+/**
+ * Create tab for notes only if notes exist for an article
+ */
+function jdt_user_notes_note_exist($node) {
 }
