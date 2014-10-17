@@ -124,6 +124,26 @@ function jdt_user_notes_form_definition_submit($form, &$form_state) {
   * Show related notes to an article.
   */
 function jdt_user_notes_display_notes($node) {
+  global $user;
+  $user_id = $user->uid;
+  $node_id = $node->nid;
+  // Initialize default values of variables
+  // If no values exist, then default values get populated
+  $vars = array('NOTE_TEXT' => 'NOTE_TEXT', 'NODE_TITLE' => 'NODE_TITLE', 'NODE_AUTHOR' => 'NODE_AUTHOR');
+  // Return Node Title
+  $node_title = $node->title;
+  // Return Node Author
+  //dsm(user_load($node->uid));
+  $node_author = $user->name;
+  module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
+  $load_articles = jdt_user_notes_entry_load($user_id,$node_id);
+  //dsm($load_articles);
+  return array(
+     '#theme' => 'jdt-user-notes',
+     '#NOTE_TEXT' => $articles,
+     '#NODE_TITLE' => $node_title,
+     '#NODE_AUTHOR' => $node_author,
+  );
 }
 
 /**
@@ -139,4 +159,21 @@ function jdt_user_notes_note_exist($node) {
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+  * Hook Theme
+  */
+function jdt_user_notes_theme() {
+  return array(
+    // PLACEHOLDERS to hold initial values
+    'jdt-user-notes' => array(
+       'variables' => array(
+          'NOTE_TEXT' => 'Test Note linked to test node',
+          'NODE_TITLE' => 'Test Node',
+          'NODE_AUTHOR' => 'Test Node Author',
+       ),
+       'template' => 'theme/jdt_user_notes_theming',
+    ),
+  );
 }
