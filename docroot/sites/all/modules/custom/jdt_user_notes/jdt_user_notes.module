@@ -136,7 +136,7 @@ function jdt_user_notes_display_notes($node) {
   //dsm(user_load($node->uid));
   $node_author = $user->name;
   module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
-  $load_articles = jdt_user_notes_entry_load($user_id,$node_id);
+  $load_articles = jdt_user_notes_entry_load($node_id,$user_id);
   //die(print_r($load_articles));
   //dsm($load_articles);
   //dsm($load_articles['note_text']);
