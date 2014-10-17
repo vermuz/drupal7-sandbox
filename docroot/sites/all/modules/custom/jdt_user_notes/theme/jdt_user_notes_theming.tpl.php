@@ -4,7 +4,6 @@
   * Template file for tabs
   * Available custom variables:
   */
-  //dpm($variables);
 ?>
 <!-- Tab template -->
 <div class="note-container">

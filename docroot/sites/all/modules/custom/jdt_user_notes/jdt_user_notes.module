@@ -22,7 +22,7 @@ function jdt_user_notes_menu() {
   // Introduce the Notes tab.
   // Check if note exists before showing the tab.
   $items['node/%node/view_notes'] = array(
-    'title' => t('My Notes'),
+    'title' => 'My Notes',
     'description' => 'Display articles related to an article',
     'page callback' => 'jdt_user_notes_display_notes',
     'page arguments' => array(1),
@@ -109,7 +109,6 @@ function jdt_user_notes_form_definition($form, &$form_state, $node) {
 function jdt_user_notes_form_definition_submit($form, &$form_state) {
   // Grab values from the form state.
   $values = $form_state['values'];
-  dsm($values);
   $entry = array(
     'article_nid' => $form_state['values']['nid'],
     'note_text'   => $form_state['values']['note_textfield'],
@@ -121,30 +120,30 @@ function jdt_user_notes_form_definition_submit($form, &$form_state) {
 }
 
 /**
-  * Show related notes to an article.
-  */
+ * Show related notes to an article.
+ */
 function jdt_user_notes_display_notes($node) {
   global $user;
   $user_id = $user->uid;
   $node_id = $node->nid;
-  // Initialize default values of variables
-  // If no values exist, then default values get populated
-  $vars = array('NOTE_TEXT' => 'NOTE_TEXT', 'NODE_TITLE' => 'NODE_TITLE', 'NODE_AUTHOR' => 'NODE_AUTHOR');
-  // Return Node Title
+  // Initialize default values of variables.
+  // If no values exist, then default values get populated.
+  $vars = array(
+    'NOTE_TEXT' => 'NOTE_TEXT',
+    'NODE_TITLE' => 'NODE_TITLE',
+    'NODE_AUTHOR' => 'NODE_AUTHOR',
+  );
+  // Return Node Title.
   $node_title = $node->title;
-  // Return Node Author
-  //dsm(user_load($node->uid));
+  // Return Node Author.
   $node_author = $user->name;
   module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
-  $load_articles = jdt_user_notes_entry_load($node_id,$user_id);
-  //die(print_r($load_articles));
-  //dsm($load_articles);
-  //dsm($load_articles['note_text']);
+  $load_articles = jdt_user_notes_entry_load($node_id, $user_id);
   return array(
-     '#theme' => 'jdt-user-notes',
-     '#NOTE_TEXT' => $load_articles['note_text'],
-     '#NODE_TITLE' => $node_title,
-     '#NODE_AUTHOR' => $node_author,
+    '#theme' => 'jdt-user-notes',
+    '#NOTE_TEXT' => $load_articles['note_text'],
+    '#NODE_TITLE' => $node_title,
+    '#NODE_AUTHOR' => $node_author,
   );
 }
 
@@ -156,26 +155,26 @@ function jdt_user_notes_note_exist($node) {
   $user_id = $user->uid;
   $node_id = $node->nid;
   module_load_include('inc', 'jdt_user_notes', 'jdt_user_notes_crud');
-  $load_values = jdt_user_notes_entry_load($node_id,$user_id);
-  if(isset($load_values['note_text'])) {
+  $load_values = jdt_user_notes_entry_load($node_id, $user_id);
+  if (isset($load_values['note_text'])) {
     return TRUE;
   }
   return FALSE;
 }
 
 /**
-  * Hook Theme
-  */
+ * Hook Theme.
+ */
 function jdt_user_notes_theme() {
   return array(
-    // PLACEHOLDERS to hold initial values
+    // PLACEHOLDERS to hold initial values.
     'jdt-user-notes' => array(
-       'variables' => array(
-          'NOTE_TEXT' => 'Test Note linked to test node',
-          'NODE_TITLE' => 'Test Node',
-          'NODE_AUTHOR' => 'Test Node Author',
-       ),
-       'template' => 'theme/jdt_user_notes_theming',
+      'variables' => array(
+        'NOTE_TEXT' => 'Test Note linked to test node',
+        'NODE_TITLE' => 'Test Node',
+        'NODE_AUTHOR' => 'Test Node Author',
+      ),
+      'template' => 'theme/jdt_user_notes_theming',
     ),
   );
 }
